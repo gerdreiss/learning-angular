@@ -1,12 +1,5 @@
 import { Component, computed, input, output } from '@angular/core';
-
-//export type User = { id: string; avatar: string; name: string };
-
-export interface User {
-  id: string;
-  avatar: string;
-  name: string;
-}
+import { type User } from './user.model';
 
 @Component({
   selector: 'app-user',
@@ -15,6 +8,7 @@ export interface User {
   styleUrl: './user.component.css',
 })
 export class UserComponent {
+  // old, more complex way of doing in
   //@Input({ required: true }) id!: string;
   //@Input({ required: true }) avatar!: string;
   //@Input({ required: true }) name!: string;
@@ -23,12 +17,14 @@ export class UserComponent {
   //  return 'assets/users/' + this.avatar();
   //}
 
+  // new better way
   // id = input.required<string>();
   // avatar = input.required<string>();
   // name = input.required<string>();
   // imagePath = computed(() => 'assets/users/' + this.avatar());
   // select = output<string>();
 
+  // use the whole User object instead of separate fields
   user = input.required<User>();
   imagePath = computed(() => 'assets/users/' + this.user().avatar);
   select = output<User>();
