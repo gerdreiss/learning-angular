@@ -1,6 +1,13 @@
 @if (isAddingTask) {
   <app-new-task (cancel)="onCancelAddTask()" (submit)="onCreateTask($event)" />
 }
+@if (editedTask) {
+  <app-edit-task
+    [task]="editedTask"
+    (cancel)="onCancelEditTask()"
+    (submit)="onUpdateTask($event)"
+  />
+}
 
 <section id="tasks">
   <header>
@@ -13,7 +20,11 @@
   <ul>
     @for (task of selectedUserTasks; track task.id) {
       <li>
-        <app-task [task]="task" (complete)="onTaskComplete($event)" />
+        <app-task
+          [task]="task"
+          (edit)="onStartEditTask($event)"
+          (complete)="onTaskComplete($event)"
+        />
       </li>
     }
   </ul>

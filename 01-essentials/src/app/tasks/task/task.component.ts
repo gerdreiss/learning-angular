@@ -11,7 +11,12 @@ import { type Task } from './task.model';
 })
 export class TaskComponent {
   task = input.required<Task>();
+  edit = output<Task>();
   complete = output<string>();
+
+  onTaskEdit() {
+    this.edit.emit(this.task());
+  }
 
   onTaskComplete() {
     this.complete.emit(this.task().id);

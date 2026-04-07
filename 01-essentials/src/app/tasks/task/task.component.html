@@ -4,6 +4,7 @@
     <time>{{ task().dueDate }}</time>
     <p>{{ task().summary }}</p>
     <p class="actions">
+      <button (click)="onTaskEdit()">Edit</button>
       <button (click)="onTaskComplete()">Complete</button>
     </p>
   </article>
