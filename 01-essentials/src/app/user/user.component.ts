@@ -26,6 +26,7 @@ export class UserComponent {
 
   // use the whole User object instead of separate fields
   user = input.required<User>();
+  selected = input.required<boolean>();
   imagePath = computed(() => 'assets/users/' + this.user().avatar);
   select = output<User>();
 
