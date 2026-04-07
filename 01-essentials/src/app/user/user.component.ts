@@ -1,4 +1,5 @@
 import { Component, computed, input, output } from '@angular/core';
+import { CardComponent } from '../shared/card/card.component';
 import { type User } from './user.model';
 
 @Component({
@@ -6,6 +7,7 @@ import { type User } from './user.model';
   standalone: true,
   templateUrl: './user.component.html',
   styleUrl: './user.component.css',
+  imports: [CardComponent],
 })
 export class UserComponent {
   // old, more complex way of doing in
