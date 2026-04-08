@@ -1,4 +1,12 @@
-import { Component, computed, input, output, Signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  input,
+  output,
+  signal,
+  Signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { type Task } from '../task/task.model';
 
@@ -14,21 +22,11 @@ export class EditTaskComponent {
   cancel = output<void>();
   submit = output<Task>();
 
-  title: Signal<string> = computed(() => this.task().title);
-  summary: Signal<string> = computed(() => this.task().summary);
-  dueDate: Signal<string> = computed(() => this.task().dueDate);
-
   onCancel() {
     this.cancel.emit();
   }
 
   onSubmit() {
-    this.submit.emit({
-      id: this.task()!.id,
-      userId: this.task()!.userId,
-      title: this.title(),
-      summary: this.summary(),
-      dueDate: this.dueDate(),
-    });
+    this.submit.emit(this.task());
   }
 }
