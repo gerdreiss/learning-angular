@@ -1,11 +1,10 @@
-import { Component, input } from '@angular/core';
-import { v4 as uuidv4 } from 'uuid';
-import { DUMMY_TASKS } from './dummy-tasks';
+import { Component, inject, input } from '@angular/core';
 import { EditTaskComponent } from './edit-task/edit-task.component';
 import { type NewTask } from './new-task/new-task';
 import { NewTaskComponent } from './new-task/new-task.component';
 import { TaskComponent } from './task/task.component';
-import { Task } from './task/task.model';
+import { type Task } from './task/task.model';
+import { TasksService } from './tasks.service';
 
 @Component({
   selector: 'app-tasks',
@@ -19,14 +18,18 @@ export class TasksComponent {
   userName = input.required<string>();
   isAddingTask = false;
   editedTask?: Task;
-  tasks = DUMMY_TASKS;
+
+  private tasksService = inject(TasksService);
+
+  // this is another way to inject the tasks service
+  // constructor(private tasksService: TasksService) {}
 
   get selectedUserTasks() {
-    return this.tasks.filter((task) => task.userId === this.userId());
+    return this.tasksService.getUserTasks(this.userId());
   }
 
-  onTaskComplete(id: string) {
-    this.tasks = this.tasks.filter((task) => task.id !== id);
+  onTaskComplete(taskId: string) {
+    this.tasksService.removeTask(taskId);
   }
 
   onStartAddTask() {
@@ -38,13 +41,7 @@ export class TasksComponent {
   }
 
   onCreateTask(task: NewTask) {
-    this.tasks.push({
-      id: uuidv4(),
-      userId: this.userId(),
-      title: task.title,
-      summary: task.summary,
-      dueDate: task.dueDate,
-    });
+    this.tasksService.addTask(this.userId(), task);
     this.isAddingTask = false;
   }
 
@@ -57,13 +54,7 @@ export class TasksComponent {
   }
 
   onUpdateTask(updated: Task) {
-    for (let task of this.tasks) {
-      if (task.id === updated.id) {
-        task.title = this.editedTask!.title;
-        task.summary = this.editedTask!.summary;
-        task.dueDate = this.editedTask!.dueDate;
-      }
-    }
+    this.tasksService.updateTask(updated);
     this.editedTask = undefined;
   }
 }
