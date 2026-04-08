@@ -1,12 +1,11 @@
 import { Component, input, output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { type Task } from '../task/task.model';
 
 @Component({
-    selector: 'app-edit-task',
-    imports: [FormsModule],
-    templateUrl: './edit-task.component.html',
-    styleUrl: './edit-task.component.css'
+  standalone: false,
+  selector: 'app-edit-task',
+  templateUrl: './edit-task.component.html',
+  styleUrl: './edit-task.component.css',
 })
 export class EditTaskComponent {
   task = input.required<Task>();
