@@ -3,11 +3,10 @@ import { CardComponent } from '../shared/card/card.component';
 import { type User } from './user.model';
 
 @Component({
-  selector: 'app-user',
-  standalone: true,
-  templateUrl: './user.component.html',
-  styleUrl: './user.component.css',
-  imports: [CardComponent],
+    selector: 'app-user',
+    templateUrl: './user.component.html',
+    styleUrl: './user.component.css',
+    imports: [CardComponent]
 })
 export class UserComponent {
   // old, more complex way of doing in

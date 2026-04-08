@@ -3,11 +3,10 @@ import { FormsModule } from '@angular/forms';
 import { type NewTask } from './new-task';
 
 @Component({
-  selector: 'app-new-task',
-  standalone: true,
-  imports: [FormsModule],
-  templateUrl: './new-task.component.html',
-  styleUrl: './new-task.component.css',
+    selector: 'app-new-task',
+    imports: [FormsModule],
+    templateUrl: './new-task.component.html',
+    styleUrl: './new-task.component.css'
 })
 export class NewTaskComponent {
   cancel = output<void>();

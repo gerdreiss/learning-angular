@@ -6,11 +6,10 @@ import { UserComponent } from './user/user.component';
 import { User } from './user/user.model';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [HeaderComponent, UserComponent, TasksComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+    selector: 'app-root',
+    imports: [HeaderComponent, UserComponent, TasksComponent],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css'
 })
 export class AppComponent {
   users = DUMMY_USERS;
