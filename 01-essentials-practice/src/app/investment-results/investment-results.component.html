@@ -1,6 +1,4 @@
-@if (isEmpty()) {
-  <p class="center">Please enter some values and press "Calculate"</p>
-} @else {
+@if (hasResults()) {
   <table>
     <thead>
       <th>Year</th>
@@ -21,4 +19,6 @@
       }
     </tbody>
   </table>
+} @else {
+  <p class="center">Please enter some values and press "Calculate"</p>
 }

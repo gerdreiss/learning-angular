@@ -1,6 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, input } from '@angular/core';
-import { InvestmentResult } from '../investment.model';
+import { Component, computed, inject } from '@angular/core';
+import { InvestmentService } from '../investment.service';
 
 @Component({
   selector: 'app-investment-results',
@@ -9,9 +9,10 @@ import { InvestmentResult } from '../investment.model';
   styleUrl: './investment-results.component.css',
 })
 export class InvestmentResultsComponent {
-  results = input.required<InvestmentResult[]>();
+  private investmentService = inject(InvestmentService);
 
-  isEmpty() {
-    return this.results().length === 0;
-  }
+  results = computed(() => this.investmentService.investmentResults());
+  hasResults = computed(
+    () => this.investmentService.investmentResults().length > 0,
+  );
 }
