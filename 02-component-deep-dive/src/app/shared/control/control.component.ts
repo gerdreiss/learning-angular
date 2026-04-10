@@ -6,7 +6,10 @@ import { Component, input, ViewEncapsulation } from '@angular/core';
   templateUrl: './control.component.html',
   styleUrl: './control.component.css',
   encapsulation: ViewEncapsulation.None,
+  host: { class: 'control' },
 })
 export class ControlComponent {
+  // old way of doing the host styling thing
+  //@HostBinding('class') className = 'control';
   label = input.required<string>();
 }
