@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   OnInit,
+  output,
   viewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -18,14 +19,17 @@ import { ControlComponent } from '../../../shared/control/control.component';
 export class NewTicketComponent implements OnInit, AfterViewInit {
   private form = viewChild.required<ElementRef<HTMLFormElement>>('form');
 
-  onSubmit(title: string, request: string) {
-    console.dir(title);
-    console.dir(request);
+  title = '';
+  text = '';
+  add = output<{ title: string; text: string }>();
+
+  onSubmit() {
+    this.add.emit({ title: this.title, text: this.text });
     this.form().nativeElement.reset();
   }
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    console.log('INIT');
   }
 
   ngAfterViewInit(): void {
