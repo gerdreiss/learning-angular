@@ -1,4 +1,5 @@
 import {
+  AfterContentInit,
   Component,
   contentChild,
   ElementRef,
@@ -14,10 +15,14 @@ import {
   encapsulation: ViewEncapsulation.None,
   host: { class: 'control' },
 })
-export class ControlComponent {
+export class ControlComponent implements AfterContentInit {
   // old way of doing the host styling thing
   //@HostBinding('class') className = 'control';
   label = input.required<string>();
   content =
     contentChild<ElementRef<HTMLInputElement | HTMLTextAreaElement>>('input');
+
+  ngAfterContentInit(): void {
+    console.log(this.content());
+  }
 }
