@@ -11,25 +11,25 @@
       <tr>
         <td>New York:</td>
         <td style="text-align: right">
-          {{ currentTemperaturs.newYork | number: "1.2-2" }}
+          {{ currentTemperaturs.newYork | temperature: "C" : "F" }}
         </td>
       </tr>
       <tr>
         <td>Berlin:</td>
         <td style="text-align: right">
-          {{ currentTemperaturs.berlin | number: "1.2-2" }}
+          {{ currentTemperaturs.berlin | temperature: "C" : "F" }}
         </td>
       </tr>
       <tr>
         <td>Paris:</td>
         <td style="text-align: right">
-          {{ currentTemperaturs.paris | number: "1.2-2" }}
+          {{ currentTemperaturs.paris | temperature: "C" : "F" }}
         </td>
       </tr>
       <tr>
         <td>Chicago:</td>
         <td style="text-align: right">
-          {{ currentTemperaturs.chicago | number: "1.2-2" }}
+          {{ currentTemperaturs.chicago | temperature: "C" : "F" }}
         </td>
       </tr>
     </table>
@@ -45,7 +45,9 @@
     </header>
     <ul>
       @for (temperature of historicTemperatures; track temperature) {
-        <li (click)="onReset($index)">{{ temperature }}</li>
+        <li style="text-align: right" (click)="onReset($index)">
+          {{ temperature | temperature: "C" }}
+        </li>
       }
     </ul>
   </article>
