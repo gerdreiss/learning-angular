@@ -4,11 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { Task, TaskStatus } from '../../task.model';
 
 @Component({
-  selector: 'app-task-item',
-  standalone: true,
-  imports: [FormsModule],
-  templateUrl: './task-item.component.html',
-  styleUrl: './task-item.component.css',
+    selector: 'app-task-item',
+    imports: [FormsModule],
+    templateUrl: './task-item.component.html',
+    styleUrl: './task-item.component.css'
 })
 export class TaskItemComponent {
   task = input.required<Task>();
