@@ -1,6 +1,5 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
 import { Task, TaskStatus } from '../../task.model';
 import { TasksService } from '../../tasks.service';
 

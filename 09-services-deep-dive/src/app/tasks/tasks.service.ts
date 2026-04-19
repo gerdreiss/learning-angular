@@ -10,6 +10,10 @@ export class TasksService {
 
   allTasks = this.tasks.asReadonly();
 
+  tasksWithStatus(status: TaskStatus): Task[] {
+    return this.tasks().filter((t) => t.status === status);
+  }
+
   addTask(data: { title: string; description: string }) {
     this.tasks.update((old) => [
       ...old,
