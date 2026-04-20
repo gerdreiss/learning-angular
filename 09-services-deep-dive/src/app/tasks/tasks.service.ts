@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
-import { LoggingService } from '../logging.service';
+import { LoggingService, LoggingServiceToken } from '../logging.service';
 import { Task, TaskStatus } from './task.model';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { Task, TaskStatus } from './task.model';
 })
 export class TasksService {
   private tasks = signal<Task[]>([]);
-  private logger = inject(LoggingService);
+  private logger = inject(LoggingServiceToken);
 
   allTasks = this.tasks.asReadonly();
 
