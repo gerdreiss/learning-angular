@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   clickCount = signal(0);
   clickCount$ = toObservable(this.clickCount);
   interval$ = interval(1000);
-  interval = toSignal(this.interval$);
+  interval = toSignal(this.interval$, { initialValue: 0 });
 
   private destroyRef = inject(DestroyRef);
 
