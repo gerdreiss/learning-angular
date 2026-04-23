@@ -15,11 +15,13 @@ export class AvailablePlacesComponent implements OnInit {
   places = signal<Place[] | undefined>(undefined);
   isFetching = signal(false);
   error = signal('');
+
   private httpClient = inject(HttpClient);
   private destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
     this.isFetching.set(true);
+
     const subscription = this.httpClient
       .get<{ places: Place[] }>('http://localhost:3000/places')
       .pipe(
@@ -35,5 +37,15 @@ export class AvailablePlacesComponent implements OnInit {
       });
 
     this.destroyRef.onDestroy(() => subscription.unsubscribe());
+  }
+
+  onSelectPlace(selectedPlace: Place) {
+    this.httpClient //
+      .put('http://localhost:3000/user-places', {
+        placeId: selectedPlace.id,
+      })
+      .subscribe({
+        next: (response) => console.log(response),
+      });
   }
 }
