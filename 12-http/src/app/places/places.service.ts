@@ -26,11 +26,22 @@ export class PlacesService {
   }
 
   addPlaceToUserPlaces(place: Place): Observable<Object> {
-    this.userPlaces.update((places) => [...places, place]);
+    const previous = this.userPlaces();
 
-    return this.httpClient.put('http://localhost:3000/user-places', {
-      placeId: place.id,
-    });
+    if (!previous.some((p) => p.id === place.id)) {
+      this.userPlaces.set([...previous, place]);
+    }
+
+    return this.httpClient
+      .put('http://localhost:3000/user-places', {
+        placeId: place.id,
+      })
+      .pipe(
+        catchError((error) => {
+          this.userPlaces.set(previous);
+          return throwError(() => new Error('Failed to store selected place.'));
+        }),
+      );
   }
 
   removeUserPlace(placeId: string) {
