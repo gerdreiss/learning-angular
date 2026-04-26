@@ -48,7 +48,23 @@ export class PlacesService {
   }
 
   removeUserPlace(placeId: string) {
-    this.httpClient.delete('http://localhost:3000/user-places/' + placeId);
+    const previous = this.userPlaces();
+
+    if (previous.some((p) => p.id === placeId)) {
+      this.userPlaces.set(previous.filter((p) => p.id !== placeId));
+    }
+
+    return this.httpClient
+      .delete('http://localhost:3000/user-places/' + placeId)
+      .pipe(
+        catchError((error) => {
+          this.userPlaces.set(previous);
+          this.errorService.showError('Failed to delete selected place .');
+          return throwError(
+            () => new Error('Failed to delete selected place.'),
+          );
+        }),
+      );
   }
 
   private fetchPlaces(url: string): Observable<Place[]> {
