@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -6,7 +6,16 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { of } from 'rxjs';
+import { debounceTime, of } from 'rxjs';
+
+const STORAGE_NAME = 'saved-login-form';
+
+let initialEmailValue = '';
+const savedForm = window.localStorage.getItem(STORAGE_NAME);
+if (savedForm) {
+  const loadedForm = JSON.parse(savedForm);
+  initialEmailValue = loadedForm.email;
+}
 
 function mustContainSpecialCharacter(control: AbstractControl<string>) {
   const regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
@@ -31,8 +40,10 @@ function emailIsUnique(control: AbstractControl<string>) {
   imports: [ReactiveFormsModule],
 })
 export class LoginComponent {
+  private destroyRef = inject(DestroyRef);
+
   form = new FormGroup({
-    email: new FormControl('', {
+    email: new FormControl(initialEmailValue, {
       validators: [Validators.required, Validators.email],
       asyncValidators: [emailIsUnique],
     }),
@@ -59,6 +70,29 @@ export class LoginComponent {
       this.form.controls.password.dirty &&
       this.form.controls.password.invalid
     );
+  }
+
+  ngOnInit() {
+    // const savedForm = window.localStorage.getItem(STORAGE_NAME);
+    // if (savedForm) {
+    //   const loadedForm = JSON.parse(savedForm);
+    //   this.form.patchValue({
+    //     email: loadedForm.email,
+    //   });
+    // }
+
+    const subscription = this.form.valueChanges
+      .pipe(debounceTime(500))
+      .subscribe({
+        next: (value) => {
+          window.localStorage.setItem(
+            STORAGE_NAME,
+            JSON.stringify({ email: value.email }),
+          );
+        },
+      });
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 
   onSubmit() {
