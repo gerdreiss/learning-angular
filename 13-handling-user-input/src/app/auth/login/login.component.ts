@@ -6,6 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { of } from 'rxjs';
 
 function mustContainSpecialCharacter(control: AbstractControl<string>) {
   const regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
@@ -13,6 +14,14 @@ function mustContainSpecialCharacter(control: AbstractControl<string>) {
     return null;
   }
   return { doesNotContainSpecialCharacter: true };
+}
+
+function emailIsUnique(control: AbstractControl<string>) {
+  if (control.value !== 'test@example.com') {
+    return of(null);
+  }
+
+  return of({ notUnique: true });
 }
 
 @Component({
@@ -25,6 +34,7 @@ export class LoginComponent {
   form = new FormGroup({
     email: new FormControl('', {
       validators: [Validators.required, Validators.email],
+      asyncValidators: [emailIsUnique],
     }),
     password: new FormControl('', {
       validators: [
