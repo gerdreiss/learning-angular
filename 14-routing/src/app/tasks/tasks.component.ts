@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
-
+import { Component, computed, inject, input } from '@angular/core';
 import { TaskComponent } from './task/task.component';
-import { Task } from './task/task.model';
+import { TasksService } from './tasks.service';
 
 @Component({
   selector: 'app-tasks',
@@ -10,5 +9,10 @@ import { Task } from './task/task.model';
   imports: [TaskComponent],
 })
 export class TasksComponent {
-  userTasks: Task[] = [];
+  private tasksService = inject(TasksService);
+
+  userId = input.required<string>();
+  userTasks = computed(() =>
+    this.tasksService.allTasks().filter((t) => t.userId === this.userId()),
+  );
 }
