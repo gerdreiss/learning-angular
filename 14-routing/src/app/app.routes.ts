@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { NotFoundComponent } from './not-found/not-found.component';
 import { NewTaskComponent } from './tasks/new-task/new-task.component';
 import { NoTaskComponent } from './tasks/no-task/no-task.component';
 import { TasksComponent } from './tasks/tasks.component';
@@ -14,4 +15,5 @@ export const routes: Routes = [
       { path: 'tasks/new', component: NewTaskComponent },
     ],
   },
+  { path: '**', component: NotFoundComponent },
 ];
