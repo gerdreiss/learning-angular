@@ -16,15 +16,14 @@ import { UsersService } from '../users.service';
   imports: [RouterOutlet, RouterLink],
 })
 export class UserTasksComponent /*implements OnInit*/ {
-  private usersService = inject(UsersService);
-
   message = input.required<string>(); // this comes from the data config in the routes config
   userId = input.required<string>(); // <-- this comes from the dynamic routes path parameter :userId
   userName = input.required<string>(); // this comes from the function below the class via the `resolve` route config
-  user = computed(() =>
-    this.usersService.users.find((u) => u.id === this.userId()),
-  );
 
+  // private usersService = inject(UsersService);
+  // user = computed(() =>
+  //   this.usersService.users.find((u) => u.id === this.userId()),
+  // );
   // private activatedRouteService = inject(ActivatedRoute);
   // private destroyRef = inject(DestroyRef);
   // user = signal<User | undefined>(undefined);
@@ -49,4 +48,11 @@ export const resolveUserName: ResolveFn<string> = (
     usersService.users.find((u) => u.id === activatedRoute.paramMap.get('userId'))
       ?.name || '';
   return userName;
+};
+
+export const resolveTitle: ResolveFn<string> = (
+  activatedRoute: ActivatedRouteSnapshot,
+  routerState: RouterStateSnapshot,
+) => {
+  return resolveUserName(activatedRoute, routerState) + "'s Tasks";
 };
