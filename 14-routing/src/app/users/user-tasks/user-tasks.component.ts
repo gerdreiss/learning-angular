@@ -27,7 +27,6 @@ export class UserTasksComponent /*implements OnInit*/ {
   //           .find((u) => u.id === paramMap.get('userId')),
   //       ),
   //   });
-
   //   this.destroyRef.onDestroy(() => subscription.unsubscribe());
   // }
 }
