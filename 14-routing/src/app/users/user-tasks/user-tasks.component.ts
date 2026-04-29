@@ -1,5 +1,12 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  ResolveFn,
+  RouterLink,
+  RouterOutlet,
+  RouterStateSnapshot,
+} from '@angular/router';
+import { User } from '../user/user.model';
 import { UsersService } from '../users.service';
 
 @Component({
@@ -11,7 +18,9 @@ import { UsersService } from '../users.service';
 export class UserTasksComponent /*implements OnInit*/ {
   private usersService = inject(UsersService);
 
+  message = input.required<string>(); // this comes from the data config in the routes config
   userId = input.required<string>(); // <-- this comes from the dynamic routes path parameter :userId
+  userName = input.required<string>(); // this comes from the function below the class via the `resolve` route config
   user = computed(() =>
     this.usersService.users.find((u) => u.id === this.userId()),
   );
@@ -30,3 +39,14 @@ export class UserTasksComponent /*implements OnInit*/ {
   //   this.destroyRef.onDestroy(() => subscription.unsubscribe());
   // }
 }
+
+export const resolveUserName: ResolveFn<string> = (
+  activatedRoute: ActivatedRouteSnapshot,
+  routerState: RouterStateSnapshot,
+) => {
+  const usersService = inject(UsersService);
+  const userName =
+    usersService.users.find((u) => u.id === activatedRoute.paramMap.get('userId'))
+      ?.name || '';
+  return userName;
+};
