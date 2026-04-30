@@ -7,7 +7,6 @@ import {
   resolveTitle,
   resolveUserName,
 } from './users/user-tasks/user-tasks.component';
-import { routes as userRoutes } from './users/users.routes';
 
 const dummyCanMatch: CanMatchFn = (route, segments) => {
   const router = inject(Router);
@@ -29,7 +28,8 @@ export const routes: Routes = [
   {
     path: 'users/:userId', // <your-domain>/users/<uid>
     component: UserTasksComponent,
-    children: userRoutes,
+    loadChildren: () =>
+      import('./users/users.routes').then((mod) => mod.routes),
     canMatch: [dummyCanMatch],
     data: {
       message: 'Hello!',
