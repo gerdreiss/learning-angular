@@ -1,38 +1,33 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { TaskComponent } from './task/task.component';
 import { TasksService } from './tasks.service';
 
 @Component({
   selector: 'app-tasks',
+  standalone: true,
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css',
   imports: [TaskComponent, RouterLink],
 })
 export class TasksComponent {
   private tasksService = inject(TasksService);
-
-  order = input<'asc' | 'desc'>('desc');
-  userId = input.required<string>();
-  userTasks = computed(() =>
-    this.tasksService
+  private activatedRoute = inject(ActivatedRoute);
+  private paramMap = toSignal(this.activatedRoute.paramMap);
+  order = input<'asc' | 'desc' | undefined>();
+  userTasks = computed(() => {
+    const tasks = this.tasksService
       .allTasks()
-      .filter((t) => t.userId === this.userId())
-      .sort((a, b) => {
-        if (this.order() === 'desc') {
-          return a.id > b.id ? -1 : 1;
-        } else {
-          return a.id > b.id ? 1 : -1;
-        }
-      }),
-  );
+      .filter((task) => task.userId === this.paramMap()?.get('userId'));
 
-  // private activatedroute = inject(ActivatedRoute);
-  // private destroyRef = inject(DestroyRef);
-  // ngOnInit() {
-  //   const sub = this.activatedroute.queryParams.subscribe({
-  //     next: (params) => this.order.set(params['order']),
-  //   });
-  //   this.destroyRef.onDestroy(() => sub.unsubscribe());
-  // }
+    if (this.order() && this.order() === 'asc') {
+      tasks.sort((a, b) => (a.id > b.id ? 1 : -1));
+    } else {
+      tasks.sort((a, b) => (a.id > b.id ? -1 : 1));
+    }
+
+    return tasks.length ? tasks : [];
+  });
+  userId = input.required<string>();
 }

@@ -1,9 +1,30 @@
 import { Routes } from '@angular/router';
-import { canLeavePage, NewTaskComponent } from '../tasks/new-task/new-task.component';
+import { NewTaskComponent, canLeavePage } from '../tasks/new-task/new-task.component';
 import { TasksComponent } from '../tasks/tasks.component';
+import { TasksService } from '../tasks/tasks.service';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'paths', pathMatch: 'prefix' },
-  { path: 'tasks', component: TasksComponent },
-  { path: 'tasks/new', component: NewTaskComponent, canDeactivate: [canLeavePage] },
+  {
+    path: '',
+    providers: [TasksService],
+    children: [
+      {
+        path: '',
+        redirectTo: 'tasks',
+        pathMatch: 'full',
+      },
+      {
+        path: 'tasks', // <your-domain>/users/<uid>/tasks
+        component: TasksComponent,
+        // loadComponent: () =>
+        //   import('../tasks/tasks.component').then((mod) => mod.TasksComponent),
+        runGuardsAndResolvers: 'always',
+      },
+      {
+        path: 'tasks/new',
+        component: NewTaskComponent,
+        canDeactivate: [canLeavePage],
+      },
+    ],
+  },
 ];
